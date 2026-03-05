@@ -20,9 +20,23 @@ function toggleMenu(header) {
   }
 }
 
+// 三级分组展开/收起
+function toggleSubGroup(header) {
+  const menu = header.nextElementSibling;
+  if (!menu) return;
+  const isOpen = menu.classList.contains('open');
+  if (isOpen) {
+    menu.classList.remove('open');
+    header.classList.remove('expanded');
+  } else {
+    menu.classList.add('open');
+    header.classList.add('expanded');
+  }
+}
+
 // 子菜单项激活切换
 function setActiveSubMenu(el) {
-  document.querySelectorAll('.sub-menu li').forEach(li => li.classList.remove('active'));
+  document.querySelectorAll('.sub-group-menu li, .sub-menu > li:not(.sub-group)').forEach(li => li.classList.remove('active'));
   el.closest('li').classList.add('active');
 }
 
@@ -121,6 +135,10 @@ function toggleFactNewMenu(btn) {
 
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.menu-item:not(.active-module) .sub-menu').forEach(sub => {
+    sub.classList.remove('open');
+  });
+
   const hash = location.hash.replace('#','');
   if (hash === 'dataset-form') {
     setTimeout(() => openDatasetForm(), 50);
