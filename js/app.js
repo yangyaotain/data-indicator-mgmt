@@ -22,22 +22,28 @@ function toggleMenu(header) {
 
 // 子菜单项激活切换
 function setActiveSubMenu(el) {
-  const submenu = el.closest('.sub-menu');
-  if (!submenu) return;
-  submenu.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+  document.querySelectorAll('.sub-menu li').forEach(li => li.classList.remove('active'));
   el.closest('li').classList.add('active');
 }
 
 // 页面路由映射
 const pageConfig = {
-  'indicator-mgmt': { title: '指标管理', icon: 'fa-solid fa-chart-line', desc: '管理和维护数据指标定义、分类与配置' },
-  'dimension-mgmt': { title: '维度管理', icon: 'fa-solid fa-table-cells', desc: '管理指标的分析维度与维度属性' },
-  'summary-table':  { title: '汇总表', icon: 'fa-solid fa-arrows-spin', desc: '查看和管理指标汇总数据表' },
-  'indicator-model':{ title: '指标模型', icon: 'fa-solid fa-diagram-project', desc: '设计和维护指标计算模型与派生关系' },
-  'time-period':    { title: '时间周期', icon: 'fa-regular fa-clock', desc: '配置指标的统计时间周期与粒度' },
-  'fact-table':     { title: '事实表', icon: 'fa-solid fa-cube', desc: '管理底层事实数据表及其映射关系' },
+  // 可视化
+  'dashboard-mgmt':    { title: '看板管理', icon: 'fa-solid fa-tv', desc: '管理和配置数据可视化看板' },
+  'dashboard':         { title: '仪表盘', icon: 'fa-solid fa-gauge-high', desc: '查看和管理数据仪表盘' },
+  'data-insight':      { title: '数据洞察', icon: 'fa-solid fa-magnifying-glass-chart', desc: '深度分析数据，发现业务洞察' },
+  'indicator-insight': { title: '指标洞察', icon: 'fa-solid fa-chart-pie', desc: '分析指标趋势与关联关系' },
+  // 指标体系
+  'indicator-mgmt':  { title: '指标管理', icon: 'fa-solid fa-chart-line', desc: '管理和维护数据指标定义、分类与配置' },
+  'dimension-mgmt':  { title: '维度管理', icon: 'fa-solid fa-table-cells', desc: '管理指标的分析维度与维度属性' },
+  'summary-table':   { title: '汇总表', icon: 'fa-solid fa-arrows-spin', desc: '查看和管理指标汇总数据表' },
+  'indicator-model': { title: '指标模型', icon: 'fa-solid fa-diagram-project', desc: '设计和维护指标计算模型与派生关系' },
+  'time-period':     { title: '时间周期', icon: 'fa-regular fa-clock', desc: '配置指标的统计时间周期与粒度' },
+  'fact-table':      { title: '事实表', icon: 'fa-solid fa-scroll', desc: '管理底层事实数据表及其映射关系' },
   'indicator-audit': { title: '指标审核', icon: 'fa-solid fa-list-check', desc: '审核指标定义变更与发布申请' },
-  'dataset':         { title: '数据集', icon: 'fa-solid fa-database', desc: '管理和配置数据集资源' },
+  // 数据管理
+  'query-widget':    { title: '查询控件', icon: 'fa-solid fa-magnifying-glass', desc: '管理和配置数据查询控件' },
+  'dataset':         { title: '数据集', icon: 'fa-solid fa-server', desc: '管理和配置数据集资源' },
 };
 
 // 页面加载
@@ -115,10 +121,6 @@ function toggleFactNewMenu(btn) {
 
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.menu-item:not(.active-module) .sub-menu').forEach(sub => {
-    sub.classList.remove('open');
-  });
-
   const hash = location.hash.replace('#','');
   if (hash === 'dataset-form') {
     setTimeout(() => openDatasetForm(), 50);
