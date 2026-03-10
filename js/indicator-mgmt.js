@@ -110,9 +110,9 @@ function renderIndicatorMgmt(container, config) {
 
 function generateIndicatorRows() {
   const data = [
-    { cat: '指标体系/免审', code: '000021', name: '日完成占比', type: '衍生指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
-    { cat: '指标体系/免审', code: '000020', name: '创建生产订单', type: '派生指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
-    { cat: '指标体系/免审', code: '000019', name: '日完成生产订单', type: '派生指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
+    { cat: '人力资源/员工关系/人员...', code: 'CRH000_ID_010003_000033', name: '在岗职工人数占职工总人...', type: '衍生指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
+    { cat: '人力资源/员工关系/人员...', code: 'CRH000_ID_010003_000032', name: '在岗职工人数', type: '派生指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
+    { cat: '人力资源/员工关系/人员...', code: 'CRH000_ID_010003_000031', name: '职工人数', type: '原子指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
     { cat: '指标体系/免审', code: '000018', name: '生产订单', type: '原子指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V2' },
     { cat: '财务数据指标', code: '000017', name: '营业收入', type: '原子指标', lock: '已锁定', online: '未上线', audit: '—', ver: 'V1' },
     { cat: '指标体系', code: '000012', name: '关闭生产订单数量', type: '派生指标', lock: '已锁定', online: '未上线', audit: '—', ver: 'V1' },
@@ -154,6 +154,9 @@ function generateIndicatorRows() {
             <div class="more-menu">
               <a onclick="openVersionPage('${row.name}')">版本管理</a>
               <a onclick="openRelationGraph()">指标关系图</a>
+              <a onclick="alert('上线：${row.name}')">上线</a>
+              <a onclick="alert('下线：${row.name}')">下线</a>
+              <a onclick="openPreviewModal()">执行预览</a>
             </div>
           </span>
         </td>
@@ -165,26 +168,19 @@ function generateIndicatorRows() {
 function openIndicatorForm(mode, data) {
   const contentArea = document.getElementById('content-area');
   const isEdit = mode === 'edit';
-  const defaults = data || {
-    category: '免审',
-    code: isEdit ? '000021' : '',
-    name: isEdit ? '日完成占比' : '',
-    type: isEdit ? '衍生指标' : '',
-    rangeMin: '',
-    rangeMax: '',
-    unit: isEdit ? '%' : '',
-    precision: isEdit ? '3' : '',
-    desc: '',
-    formula: '',
-    version: 'V1'
+  const d = data || {
+    category:'', code: isEdit ? '000021' : '', name: isEdit ? '日完成占比' : '',
+    type: isEdit ? '衍生指标' : '', enName:'', enAbbr:'', synonym:'',
+    commonName:'', definition:'', refStd:'', source:'', caliber:'',
+    formula:'', unit: isEdit ? '%' : '', dimension:'', frequency:'',
+    rangeMin:'', rangeMax:'', desc:'', period:'', version:'V1'
   };
-
-  const h = (icon) => `<i class="fa-regular fa-circle-question help-icon"></i>`;
+  const h = '<i class="fa-regular fa-circle-question help-icon"></i>';
 
   contentArea.innerHTML = `
     <div class="edit-page">
       <div class="edit-page-header">
-        <span class="edit-page-title">${isEdit ? '编辑指标' : '新建指标'}${isEdit ? '(指标版本：' + defaults.version + ')' : ''}</span>
+        <span class="edit-page-title">${isEdit ? '编辑指标' : '新建指标'}${isEdit ? '(指标版本：'+d.version+')' : ''}</span>
         <div class="edit-page-actions">
           <button class="btn btn-sm" onclick="loadPage('indicator-mgmt')">返回</button>
           <button class="btn btn-primary btn-sm">保存</button>
@@ -199,11 +195,12 @@ function openIndicatorForm(mode, data) {
                 <label class="form-label required">所属分类</label>
                 <div class="form-field">
                   <select class="form-control form-select">
-                    <option ${defaults.category === '免审' ? 'selected' : ''}>免审</option>
+                    <option value="">请选择所属分类</option>
+                    <option>免审</option>
                     <option>指标体系</option>
                     <option>财务数据指标</option>
                   </select>
-                  ${h()}
+                  ${h}
                 </div>
               </div>
             </div>
@@ -211,48 +208,128 @@ function openIndicatorForm(mode, data) {
               <div class="form-group">
                 <label class="form-label">指标编码</label>
                 <div class="form-field">
-                  <input type="text" class="form-control" value="${defaults.code}" placeholder="${isEdit ? '' : '系统自动生成'}" ${isEdit ? 'readonly style="background:#fff7e8; color:#ff7d00"' : 'readonly style="background:#f7f8fa"'}>
-                  ${h()}
+                  <input type="text" class="form-control" value="${d.code || '自动生成'}" readonly style="background:#e8f7ff; color:#1890ff">
                 </div>
               </div>
             </div>
           </div>
-          <!-- Row 2: 指标名称 | 指标类型 -->
+          <!-- Row 2: 指标类型 | 指标名称 -->
           <div class="form-row">
-            <div class="form-cell">
-              <div class="form-group">
-                <label class="form-label required">指标名称</label>
-                <div class="form-field">
-                  <input type="text" class="form-control" value="${defaults.name}" placeholder="请输入">
-                  ${h()}
-                </div>
-              </div>
-            </div>
             <div class="form-cell">
               <div class="form-group">
                 <label class="form-label required">指标类型</label>
                 <div class="form-field">
-                  <select class="form-control form-select" ${isEdit ? 'style="background:#fff7e8; color:#ff7d00"' : ''}>
+                  <select class="form-control form-select">
                     <option value="">请选择</option>
-                    <option ${defaults.type === '原子指标' ? 'selected' : ''}>原子指标</option>
-                    <option ${defaults.type === '派生指标' ? 'selected' : ''}>派生指标</option>
-                    <option ${defaults.type === '衍生指标' ? 'selected' : ''}>衍生指标</option>
+                    <option ${d.type==='原子指标'?'selected':''}>原子指标</option>
+                    <option ${d.type==='派生指标'?'selected':''}>派生指标</option>
+                    <option ${d.type==='衍生指标'?'selected':''}>衍生指标</option>
                   </select>
-                  ${h()}
+                  ${h}
+                </div>
+              </div>
+            </div>
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label required">指标名称</label>
+                <div class="form-field">
+                  <input type="text" class="form-control" value="${d.name}" placeholder="请输入">
                 </div>
               </div>
             </div>
           </div>
-          <!-- Row 3: 数据范围 | 单位 -->
+          <!-- Row 3: 指标标准项英文名称 | 英文简写 -->
           <div class="form-row">
             <div class="form-cell">
               <div class="form-group">
-                <label class="form-label">数据范围</label>
+                <label class="form-label">指标标准项英文名称</label>
                 <div class="form-field">
-                  <input type="text" class="form-control form-control-range" value="${defaults.rangeMin}" placeholder="请输入">
-                  <span class="range-sep">—</span>
-                  <input type="text" class="form-control form-control-range" value="${defaults.rangeMax}" placeholder="请输入">
-                  ${h()}
+                  <input type="text" class="form-control" value="${d.enName}" placeholder="请输入">
+                  ${h}
+                </div>
+              </div>
+            </div>
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label required">英文简写</label>
+                <div class="form-field">
+                  <input type="text" class="form-control" value="${d.enAbbr}" placeholder="请输入">
+                  ${h}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Row 4: 同义词 | 指标标准项常用名称 -->
+          <div class="form-row">
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label">同义词</label>
+                <div class="form-field">
+                  <input type="text" class="form-control" value="${d.synonym}" placeholder="请输入">
+                  ${h}
+                </div>
+              </div>
+            </div>
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label">指标标准项常用名称</label>
+                <div class="form-field">
+                  <input type="text" class="form-control" value="${d.commonName}" placeholder="请输入">
+                  ${h}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Row 5: 指标定义 | 参考标准 -->
+          <div class="form-row">
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label required">指标定义</label>
+                <div class="form-field">
+                  <input type="text" class="form-control" value="${d.definition}" placeholder="请输入">
+                  ${h}
+                </div>
+              </div>
+            </div>
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label">参考标准</label>
+                <div class="form-field">
+                  <input type="text" class="form-control" value="${d.refStd}" placeholder="请输入">
+                  ${h}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Row 6: 指标来源 | 指标口径 -->
+          <div class="form-row">
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label required">指标来源</label>
+                <div class="form-field">
+                  <input type="text" class="form-control" value="${d.source}" placeholder="请输入">
+                  ${h}
+                </div>
+              </div>
+            </div>
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label">指标口径</label>
+                <div class="form-field">
+                  <input type="text" class="form-control" value="${d.caliber}" placeholder="请输入">
+                  ${h}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Row 7: 计算公式 | 单位 -->
+          <div class="form-row">
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label">计算公式</label>
+                <div class="form-field">
+                  <textarea class="form-control" placeholder="请输入" rows="2">${d.formula}</textarea>
+                  ${h}
                 </div>
               </div>
             </div>
@@ -260,20 +337,45 @@ function openIndicatorForm(mode, data) {
               <div class="form-group">
                 <label class="form-label">单位</label>
                 <div class="form-field">
-                  <input type="text" class="form-control" value="${defaults.unit}" placeholder="请输入">
-                  ${h()}
+                  <input type="text" class="form-control" value="${d.unit}" placeholder="请输入">
+                  ${h}
                 </div>
               </div>
             </div>
           </div>
-          <!-- Row 4: 精度 | 描述 -->
+          <!-- Row 8: 维度 | 频度 -->
           <div class="form-row">
             <div class="form-cell">
               <div class="form-group">
-                <label class="form-label">精度</label>
+                <label class="form-label">维度</label>
                 <div class="form-field">
-                  <input type="text" class="form-control" value="${defaults.precision}" placeholder="请输入">
-                  ${h()}
+                  <span style="display:inline-flex; align-items:center; gap:4px; line-height:32px; cursor:pointer;">
+                    <i class="fa-solid fa-circle-plus" style="color:#1890ff;"></i>
+                    <a href="#" onclick="event.preventDefault()" style="color:#1890ff; text-decoration:none; font-size:13px;">添加维度</a>
+                  </span>
+                  ${h}
+                </div>
+              </div>
+            </div>
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label">频度</label>
+                <div class="form-field">
+                  <input type="text" class="form-control" value="${d.frequency}" placeholder="请输入">
+                  ${h}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Row 9: 数据范围 | 描述 -->
+          <div class="form-row">
+            <div class="form-cell">
+              <div class="form-group">
+                <label class="form-label">数据范围</label>
+                <div class="form-field">
+                  <input type="text" class="form-control form-control-range" value="${d.rangeMin}" placeholder="请输入">
+                  <span class="range-sep">—</span>
+                  <input type="text" class="form-control form-control-range" value="${d.rangeMax}" placeholder="请输入">
                 </div>
               </div>
             </div>
@@ -281,20 +383,26 @@ function openIndicatorForm(mode, data) {
               <div class="form-group">
                 <label class="form-label">描述</label>
                 <div class="form-field">
-                  <textarea class="form-control" placeholder="请输入" rows="3">${defaults.desc}</textarea>
-                  ${h()}
+                  <textarea class="form-control" placeholder="请输入" rows="2">${d.desc}</textarea>
+                  ${h}
                 </div>
               </div>
             </div>
           </div>
-          <!-- Row 5: 计算公式 | (空) -->
+          <!-- Row 10: 时间周期 | (空) -->
           <div class="form-row">
             <div class="form-cell">
               <div class="form-group">
-                <label class="form-label">计算公式</label>
+                <label class="form-label">时间周期</label>
                 <div class="form-field">
-                  <textarea class="form-control" placeholder="请输入" rows="3">${defaults.formula}</textarea>
-                  ${h()}
+                  <select class="form-control form-select">
+                    <option value="">请选择</option>
+                    <option>年</option>
+                    <option>月</option>
+                    <option>周</option>
+                    <option>日</option>
+                  </select>
+                  ${h}
                 </div>
               </div>
             </div>
@@ -557,7 +665,7 @@ function openDerivedBindingPage() {
         <!-- 基本配置 -->
         <div class="section-title">基本配置</div>
         <div style="margin:16px 0">
-          <button class="btn btn-primary btn-sm">选择原子指标</button>
+          <button class="btn btn-primary btn-sm" onclick="openSelectIndicatorModal()">选择原子指标</button>
         </div>
         <div class="form-grid" style="margin-top:12px">
           <div class="form-row">
@@ -623,6 +731,9 @@ function openDerivedBindingPage() {
                 <th>单位</th>
                 <th>精度</th>
                 <th>描述</th>
+                <th>时间周期</th>
+                <th>版本</th>
+                <th>过滤条件</th>
                 <th>操作</th>
               </tr>
             </thead>
@@ -644,8 +755,23 @@ function openDerivedBindingPage() {
                   </div>
                 </td>
                 <td><input type="text" class="form-control" style="height:26px; font-size:12px; width:56px; max-width:none" placeholder="请输入"></td>
-                <td><input type="text" class="form-control" style="height:26px; font-size:12px; width:56px; max-width:none" placeholder="请输入"></td>
+                <td><input type="text" class="form-control" style="height:26px; font-size:12px; width:40px; max-width:none" value="0"></td>
                 <td><input type="text" class="form-control" style="height:26px; font-size:12px; width:80px; max-width:none" placeholder="请输入"></td>
+                <td>
+                  <select class="form-control form-select" style="height:26px; font-size:12px; max-width:none; width:60px">
+                    <option selected>月</option>
+                    <option>年</option>
+                    <option>周</option>
+                    <option>日</option>
+                  </select>
+                </td>
+                <td>V1</td>
+                <td>
+                  <div style="font-size:11px; line-height:1.5;">
+                    <span style="color:#333">人员分类等于在岗职工</span><br>
+                    <a class="action-link" style="font-size:11px; color:var(--primary-blue)">+ 添加</a>
+                  </div>
+                </td>
                 <td class="op-cell">
                   <a class="action-link" style="color:#ff7d00" onclick="openPreviewModal()">执行预览</a>
                   <a class="action-link">解绑</a>
@@ -669,8 +795,22 @@ function openDerivedBindingPage() {
                   </div>
                 </td>
                 <td><input type="text" class="form-control" style="height:26px; font-size:12px; width:56px; max-width:none" value="个"></td>
-                <td><input type="text" class="form-control" style="height:26px; font-size:12px; width:56px; max-width:none" placeholder="请输入"></td>
+                <td><input type="text" class="form-control" style="height:26px; font-size:12px; width:40px; max-width:none" placeholder="请输入"></td>
                 <td><input type="text" class="form-control" style="height:26px; font-size:12px; width:80px; max-width:none" placeholder="请输入"></td>
+                <td>
+                  <select class="form-control form-select" style="height:26px; font-size:12px; max-width:none; width:60px">
+                    <option>月</option>
+                    <option>年</option>
+                    <option>周</option>
+                    <option>日</option>
+                  </select>
+                </td>
+                <td>V1</td>
+                <td>
+                  <div style="font-size:11px; line-height:1.5;">
+                    <a class="action-link" style="font-size:11px; color:var(--primary-blue)">+ 添加</a>
+                  </div>
+                </td>
                 <td class="op-cell">
                   <a class="action-link" style="color:#ff7d00" onclick="openPreviewModal()">执行预览</a>
                   <a class="action-link">解绑</a>
@@ -798,7 +938,7 @@ function openComputedBindingPage() {
         <div class="section-title" style="margin-top:32px">计算逻辑</div>
         <div class="calc-logic-area">
           <div class="calc-toolbar">
-            <button class="btn btn-sm">选择指标</button>
+            <button class="btn btn-sm" onclick="openSelectIndicatorModal('multi')">选择指标</button>
             <button class="btn btn-sm">解绑</button>
           </div>
           <div class="calc-layout">
@@ -1284,4 +1424,104 @@ function openVersionPage(indicatorName) {
         </div>
       </div>
     </div>`;
+}
+
+// ============ 选择指标弹窗 ============
+function openSelectIndicatorModal(mode) {
+  var existing = document.getElementById('select-indicator-overlay');
+  if (existing) existing.remove();
+
+  var isMulti = (mode === 'multi');
+  var indicators = isMulti ? [
+    { code:'CRH000_ID_01003...', name:'在岗职工人数', desc:'', checked:true },
+    { code:'CRH000_ID_01003...', name:'职工人数', desc:'', checked:true },
+    { code:'000020', name:'创建生产订单', desc:'' },
+    { code:'000019', name:'日完成生产订单', desc:'' },
+    { code:'000018', name:'生产订单', desc:'' },
+    { code:'000017', name:'营收收入', desc:'营收收入' },
+    { code:'000012', name:'关闭生产订单数量', desc:'' },
+    { code:'000013', name:'取消生产订单数量', desc:'' },
+    { code:'000010', name:'周完成生产订单总数', desc:'' },
+    { code:'000011', name:'日完成生产订单总数', desc:'' },
+    { code:'000009', name:'生产订单总数', desc:'' },
+    { code:'000004', name:'日完成生产订单数量', desc:'' },
+  ] : [
+    { code:'000018', name:'生产订单', desc:'' },
+    { code:'000017', name:'营收收入', desc:'营收收入' },
+    { code:'000009', name:'生产订单总数', desc:'' },
+    { code:'000002', name:'生产订单数量', desc:'' },
+  ];
+
+  var rows = indicators.map(function(r) {
+    var sel = isMulti ? '<input type="checkbox"' + (r.checked ? ' checked' : '') + '>' : '<input type="radio" name="select-ind-radio">';
+    return '<tr><td style="width:36px; text-align:center;">' + sel + '</td><td>' + r.code + '</td><td>' + r.name + '</td><td>' + r.desc + '</td></tr>';
+  }).join('');
+
+  var treeExtra = isMulti ? '' :
+    '<div style="cursor:pointer; padding:4px 8px 4px 28px; font-size:13px; color:#333; display:flex; align-items:center; gap:6px; margin-bottom:2px;">' +
+      '<i class="fa-solid fa-chevron-down" style="font-size:10px; color:#999; width:10px;"></i>' +
+      '<i class="fa-solid fa-folder" style="color:#f5a623; font-size:12px;"></i> 员工关系</div>' +
+    '<div style="cursor:pointer; padding:4px 8px 4px 50px; font-size:13px; color:#333; display:flex; align-items:center; gap:6px; margin-bottom:2px;">' +
+      '<i class="fa-solid fa-folder" style="color:#f5a623; font-size:12px;"></i> 人员规模</div>';
+
+  var topBar = isMulti ?
+    '<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-bottom:1px solid #f0f0f0; flex-shrink:0;">' +
+      '<div style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-list" style="color:#999; font-size:13px;"></i><span style="font-size:13px; color:#333;">指标管理分类</span></div>' +
+      '<div style="display:flex; align-items:center; gap:8px;"><input type="text" class="form-control" placeholder="名称或编码" style="width:180px; height:30px;"><button class="btn btn-primary btn-sm">查 询</button></div>' +
+    '</div>' : '';
+
+  var searchBar = isMulti ? '' :
+    '<div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-shrink:0;">' +
+      '<input type="text" class="form-control" placeholder="名称或编码" style="flex:1; height:32px;">' +
+      '<button class="btn btn-primary btn-sm">查 询</button>' +
+    '</div>';
+
+  var html =
+    '<div class="modal" style="width:820px; max-width:90vw; height:600px; display:flex; flex-direction:column;">' +
+      '<div class="modal-header">' +
+        '<span class="modal-title">选择指标</span>' +
+        '<div class="modal-close" onclick="closeSelectIndicatorModal()"><i class="fa-solid fa-xmark"></i></div>' +
+      '</div>' +
+      '<div style="flex:1; display:flex; flex-direction:column; overflow:hidden;">' +
+        topBar +
+        '<div style="flex:1; display:flex; overflow:hidden;">' +
+          '<div style="width:200px; min-width:200px; border-right:1px solid #e8e8e8; overflow-y:auto; padding:12px;">' +
+            '<div style="cursor:pointer; padding:4px 8px; color:#1890ff; font-size:13px; display:flex; align-items:center; gap:6px; margin-bottom:2px; background:#e8f7ff; border-radius:4px;"><i class="fa-solid fa-folder" style="color:#f5a623; font-size:12px;"></i> 全部</div>' +
+            '<div style="cursor:pointer; padding:4px 8px 4px 20px; font-size:13px; color:#333; display:flex; align-items:center; gap:6px; margin-bottom:2px;"><i class="fa-solid fa-folder" style="color:#f5a623; font-size:12px;"></i> 财务数据指标</div>' +
+            '<div style="cursor:pointer; padding:4px 8px 4px 12px; font-size:13px; color:#333; display:flex; align-items:center; gap:6px; margin-bottom:2px;"><i class="fa-solid fa-chevron-right" style="font-size:10px; color:#999; width:10px;"></i><i class="fa-solid fa-folder" style="color:#f5a623; font-size:12px;"></i> 指标体系</div>' +
+            '<div style="cursor:pointer; padding:4px 8px 4px 12px; font-size:13px; color:#333; display:flex; align-items:center; gap:6px; margin-bottom:2px;"><i class="fa-solid fa-chevron-right" style="font-size:10px; color:#999; width:10px;"></i><i class="fa-solid fa-folder" style="color:#f5a623; font-size:12px;"></i> 华润集团</div>' +
+            '<div style="cursor:pointer; padding:4px 8px 4px 12px; font-size:13px; color:#333; display:flex; align-items:center; gap:6px; margin-bottom:2px;"><i class="fa-solid fa-chevron-right" style="font-size:10px; color:#999; width:10px;"></i><i class="fa-solid fa-folder" style="color:#f5a623; font-size:12px;"></i> 人力资源</div>' +
+            treeExtra +
+          '</div>' +
+          '<div style="flex:1; display:flex; flex-direction:column; overflow:hidden; padding:12px 16px;">' +
+            searchBar +
+            '<div style="flex:1; overflow-y:auto;">' +
+              '<table class="data-table"><thead><tr><th style="width:36px;"></th><th>指标编码</th><th>指标名称</th><th>描述</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+            '</div>' +
+            '<div class="pagination" style="padding:8px 0; flex-shrink:0;">' +
+              '<span class="page-info">总共 ' + indicators.length + ' 条数据</span>' +
+              '<div class="page-btn"><i class="fa-solid fa-chevron-left"></i></div>' +
+              '<div class="page-btn active">1</div>' +
+              '<div class="page-btn"><i class="fa-solid fa-chevron-right"></i></div>' +
+              '<span class="page-info" style="margin-left:8px;">10 条/页</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="modal-footer" style="display:flex; justify-content:flex-end; gap:8px; padding:12px 16px; border-top:1px solid #e8e8e8;">' +
+        '<button class="btn btn-sm" onclick="closeSelectIndicatorModal()">取 消</button>' +
+        '<button class="btn btn-primary btn-sm" onclick="closeSelectIndicatorModal()">确 定</button>' +
+      '</div>' +
+    '</div>';
+
+  var overlay = document.createElement('div');
+  overlay.id = 'select-indicator-overlay';
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = html;
+  document.body.appendChild(overlay);
+}
+
+function closeSelectIndicatorModal() {
+  var el = document.getElementById('select-indicator-overlay');
+  if (el) el.remove();
 }

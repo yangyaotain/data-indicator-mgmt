@@ -58,6 +58,10 @@ const pageConfig = {
   // 数据管理
   'query-widget':    { title: '查询控件', icon: 'fa-solid fa-magnifying-glass', desc: '管理和配置数据查询控件' },
   'dataset':         { title: '数据集', icon: 'fa-solid fa-server', desc: '管理和配置数据集资源' },
+  // 配置管理
+  'component-mgmt':  { title: '组件管理', icon: 'fa-solid fa-puzzle-piece', desc: '管理和配置系统组件' },
+  'material-mgmt':   { title: '素材管理', icon: 'fa-regular fa-image', desc: '管理和配置素材资源' },
+  'system-settings': { title: '存储配置', icon: 'fa-solid fa-database', desc: '数据库存储配置管理' },
 };
 
 // 页面加载
@@ -76,6 +80,8 @@ function loadPage(pageName) {
   }
 
   const renderers = {
+    'dashboard-mgmt': renderDashboardMgmt,
+    'dashboard': renderDashboard,
     'indicator-mgmt': renderIndicatorMgmt,
     'dimension-mgmt': renderDimensionMgmt,
     'summary-table': renderSummaryTable,
@@ -84,6 +90,8 @@ function loadPage(pageName) {
     'fact-table': renderFactTable,
     'indicator-audit': renderIndicatorAudit,
     'dataset': renderDataset,
+    'indicator-insight': renderIndicatorInsight,
+    'system-settings': renderSystemSettings,
   };
 
   const renderer = renderers[pageName];
@@ -133,6 +141,23 @@ function toggleFactNewMenu(btn) {
   setTimeout(() => document.addEventListener('click', close), 0);
 }
 
+// 根据页面名称激活对应菜单项
+function activateMenuByPage(pageName) {
+  document.querySelectorAll('.sub-group-menu li, .sub-menu > li:not(.sub-group)').forEach(li => li.classList.remove('active'));
+  const links = document.querySelectorAll('.sub-group-menu li a, .sub-menu > li:not(.sub-group) a');
+  links.forEach(a => {
+    if (a.getAttribute('onclick') && a.getAttribute('onclick').includes("'" + pageName + "'")) {
+      a.closest('li').classList.add('active');
+      const subGroupMenu = a.closest('.sub-group-menu');
+      if (subGroupMenu) {
+        subGroupMenu.classList.add('open');
+        const header = subGroupMenu.previousElementSibling;
+        if (header) header.classList.add('expanded');
+      }
+    }
+  });
+}
+
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.menu-item:not(.active-module) .sub-menu').forEach(sub => {
@@ -144,8 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => openDatasetForm(), 50);
   } else if (hash === 'dataset-fields') {
     setTimeout(() => { openDatasetForm(); setTimeout(() => renderDsFieldsTab(), 100); }, 50);
+  } else if (hash === 'dashboard-editor') {
+    setTimeout(() => openDashboardEditor(), 50);
+  } else if (hash === 'insight-editor') {
+    setTimeout(() => openInsightEditor(), 50);
   } else if (hash && pageConfig[hash]) {
     loadPage(hash);
+    activateMenuByPage(hash);
   } else {
     loadPage('indicator-mgmt');
   }

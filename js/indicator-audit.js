@@ -72,14 +72,97 @@ function renderIndicatorAudit(container, config) {
             </thead>
             <tbody>
               <tr>
-                <td colspan="9" style="text-align:center; padding:60px 0; color:var(--text-tertiary)">
-                  <div><i class="fa-regular fa-folder-open" style="font-size:36px; color:#c9cdd4; display:block; margin-bottom:8px"></i>暂无数据</div>
-                </td>
+                <td><input type="checkbox"></td>
+                <td>人力资源/员工关系/人员...</td>
+                <td>CRH000_ID_010003_000033</td>
+                <td><a class="action-link">在岗职工人数占职工总人...</a></td>
+                <td><span class="badge badge-orange">衍生指标</span></td>
+                <td>时间维度</td>
+                <td><span class="badge badge-blue">上线审核中</span></td>
+                <td>V1</td>
+                <td class="op-cell"><a class="action-link" style="color:#ff7d00">审核</a> <a class="action-link">详情</a></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>人力资源/员工关系/人员...</td>
+                <td>CRH000_ID_010003_000032</td>
+                <td><a class="action-link">在岗职工人数</a></td>
+                <td><span class="badge badge-green">派生指标</span></td>
+                <td>时间维度</td>
+                <td><span class="badge badge-blue">上线审核中</span></td>
+                <td>V1</td>
+                <td class="op-cell"><a class="action-link" style="color:#ff7d00">审核</a> <a class="action-link">详情</a></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>人力资源/员工关系/人员...</td>
+                <td>CRH000_ID_010003_000031</td>
+                <td><a class="action-link">职工人数</a></td>
+                <td><span class="badge badge-blue">原子指标</span></td>
+                <td>—</td>
+                <td><span class="badge badge-blue">上线审核中</span></td>
+                <td>V1</td>
+                <td class="op-cell"><a class="action-link" style="color:#ff7d00">审核</a> <a class="action-link">详情</a></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>指标体系/免审</td>
+                <td>000018</td>
+                <td><a class="action-link">生产订单</a></td>
+                <td><span class="badge badge-blue">原子指标</span></td>
+                <td>—</td>
+                <td><span class="badge badge-green">上线审核通过</span></td>
+                <td>V2</td>
+                <td class="op-cell"><a class="action-link">详情</a></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>指标体系</td>
+                <td>000011</td>
+                <td><a class="action-link">日完成生产订单总数</a></td>
+                <td><span class="badge badge-green">派生指标</span></td>
+                <td>时间维度</td>
+                <td><span class="badge badge-green">上线审核通过</span></td>
+                <td>V1</td>
+                <td class="op-cell"><a class="action-link">详情</a></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>指标体系</td>
+                <td>000009</td>
+                <td><a class="action-link">生产订单总数</a></td>
+                <td><span class="badge badge-green">派生指标</span></td>
+                <td>—</td>
+                <td><span class="badge badge-green">上线审核通过</span></td>
+                <td>V1</td>
+                <td class="op-cell"><a class="action-link">详情</a></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>指标体系</td>
+                <td>000005</td>
+                <td><a class="action-link">日计划完成率</a></td>
+                <td><span class="badge badge-orange">衍生指标</span></td>
+                <td>时间维度, 产品维度</td>
+                <td><span class="badge badge-green">上线审核通过</span></td>
+                <td>V1</td>
+                <td class="op-cell"><a class="action-link">详情</a></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>财务数据指标</td>
+                <td>000017</td>
+                <td><a class="action-link">营业收入</a></td>
+                <td><span class="badge badge-blue">原子指标</span></td>
+                <td>—</td>
+                <td><span style="color:var(--text-tertiary)">—</span></td>
+                <td>V1</td>
+                <td class="op-cell"><a class="action-link">详情</a></td>
               </tr>
             </tbody>
           </table>
           <div class="pagination" style="padding:12px 16px">
-            <span class="page-info">总共 0 条数据</span>
+            <span class="page-info">总共 8 条数据</span>
             <span class="page-nav">
               <span class="page-btn disabled">&lt;</span>
               <span class="page-btn active">1</span>
