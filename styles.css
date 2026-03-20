@@ -301,8 +301,8 @@ ul {
 .sub-group-header {
   display: flex;
   align-items: center;
-  padding: 0 16px 0 28px;
-  height: 34px;
+  padding: 0 16px 0 48px;
+  height: 36px;
   cursor: pointer;
   transition: background 0.15s;
   user-select: none;
@@ -313,10 +313,11 @@ ul {
 }
 
 .sub-group-icon {
-  width: 18px;
-  font-size: 14px;
+  width: 16px;
+  font-size: 13px;
   margin-right: 8px;
   text-align: center;
+  display: inline-block;
   color: var(--text-tertiary);
 }
 
@@ -326,14 +327,14 @@ ul {
 
 .sub-group-label {
   flex: 1;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
   color: var(--text-secondary);
 }
 
 .active-group > .sub-group-header .sub-group-label {
-  color: var(--text-primary);
-  font-weight: 600;
+  color: var(--text-secondary);
+  font-weight: 400;
 }
 
 .sub-group-arrow {
@@ -358,10 +359,10 @@ ul {
 
 .sub-group-menu li a {
   display: block;
-  padding: 0 16px 0 56px;
-  height: 34px;
-  line-height: 34px;
-  font-size: 13px;
+  padding: 0 16px 0 68px;
+  height: 36px;
+  line-height: 36px;
+  font-size: 14px;
   color: var(--text-secondary);
   transition: all 0.15s;
   white-space: nowrap;
@@ -1897,8 +1898,8 @@ textarea.form-control {
 }
 
 .batch-config {
-  width: 220px;
-  min-width: 220px;
+  width: 300px;
+  min-width: 300px;
   border-right: 1px solid var(--border-color);
   background: #fff;
   overflow-y: auto;
@@ -1999,6 +2000,17 @@ textarea.form-control {
 
 .batch-chip i:hover {
   color: var(--text-primary);
+}
+
+.batch-mod-dim-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  background: #f0f5ff;
+  border-radius: 3px;
+  font-size: 12px;
+  color: var(--primary-color);
+  white-space: nowrap;
 }
 
 /* ===== 更多操作下拉 ===== */

@@ -56,7 +56,7 @@ function renderTimePeriod(container, config) {
               <td><input type="text" class="form-control" placeholder="请输入说明" style="font-size:13px"></td>
               <td class="op-cell">
                 <i class="fa-solid fa-check action-icon" style="color:#00b42a" title="确认"></i>
-                <i class="fa-regular fa-trash-can action-icon action-icon-danger" title="删除"></i>
+                <i class="fa-regular fa-trash-can action-icon action-icon-danger" title="删除" onclick="confirmDelete('新增周期')"></i>
               </td>
             </tr>
           </tbody>
@@ -89,7 +89,7 @@ function addTimePeriodRow() {
     <td><input type="text" class="form-control" placeholder="请输入说明" style="font-size:13px"></td>
     <td class="op-cell">
       <i class="fa-solid fa-check action-icon" style="color:#00b42a" title="确认"></i>
-      <i class="fa-regular fa-trash-can action-icon action-icon-danger" title="删除"></i>
+      <i class="fa-regular fa-trash-can action-icon action-icon-danger" title="删除" onclick="confirmDelete('新增周期')"></i>
     </td>`;
   tbody.appendChild(tr);
 }

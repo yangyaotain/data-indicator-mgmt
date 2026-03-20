@@ -51,7 +51,7 @@ const pageConfig = {
   'indicator-mgmt':  { title: '指标管理', icon: 'fa-solid fa-chart-line', desc: '管理和维护数据指标定义、分类与配置' },
   'dimension-mgmt':  { title: '维度管理', icon: 'fa-solid fa-table-cells', desc: '管理指标的分析维度与维度属性' },
   'summary-table':   { title: '汇总表', icon: 'fa-solid fa-arrows-spin', desc: '查看和管理指标汇总数据表' },
-  'indicator-model': { title: '指标模型', icon: 'fa-solid fa-diagram-project', desc: '设计和维护指标计算模型与派生关系' },
+  'indicator-model': { title: '模板管理', icon: 'fa-solid fa-diagram-project', desc: '设计和维护指标计算模型与派生关系' },
   'time-period':     { title: '时间周期', icon: 'fa-regular fa-clock', desc: '配置指标的统计时间周期与粒度' },
   'fact-table':      { title: '事实表', icon: 'fa-solid fa-scroll', desc: '管理底层事实数据表及其映射关系' },
   'indicator-audit': { title: '指标审核', icon: 'fa-solid fa-list-check', desc: '审核指标定义变更与发布申请' },
@@ -180,3 +180,124 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPage('indicator-mgmt');
   }
 });
+
+// ============ 通用删除确认弹窗 ============
+function confirmDelete(name) {
+  var overlay = document.createElement('div');
+  overlay.id = 'confirm-delete-overlay';
+  overlay.className = 'modal-overlay';
+
+  var modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.style.cssText = 'width:420px;display:flex;flex-direction:column;overflow:hidden;';
+  modal.innerHTML =
+    '<div class="modal-header">' +
+      '<span class="modal-title">确认删除</span>' +
+      '<span class="modal-close" onclick="closeConfirmDelete()">&times;</span>' +
+    '</div>' +
+    '<div style="padding:24px 28px;font-size:14px;color:#333;line-height:1.8;">' +
+      '<i class="fa-solid fa-triangle-exclamation" style="color:#ff7d00;margin-right:8px;font-size:16px;"></i>' +
+      '您确定要删除【<b>' + name + '</b>】吗？' +
+    '</div>' +
+    '<div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 28px;border-top:1px solid #f0f0f0;">' +
+      '<button class="btn btn-sm" onclick="closeConfirmDelete()">取 消</button>' +
+      '<button class="btn btn-primary btn-sm" style="background:#f53f3f;border-color:#f53f3f;" onclick="closeConfirmDelete()">确 定</button>' +
+    '</div>';
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+}
+
+function confirmBatchDelete(count) {
+  var overlay = document.createElement('div');
+  overlay.id = 'confirm-delete-overlay';
+  overlay.className = 'modal-overlay';
+
+  var modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.style.cssText = 'width:420px;display:flex;flex-direction:column;overflow:hidden;';
+  modal.innerHTML =
+    '<div class="modal-header">' +
+      '<span class="modal-title">确认删除</span>' +
+      '<span class="modal-close" onclick="closeConfirmDelete()">&times;</span>' +
+    '</div>' +
+    '<div style="padding:24px 28px;font-size:14px;color:#333;line-height:1.8;">' +
+      '<i class="fa-solid fa-triangle-exclamation" style="color:#ff7d00;margin-right:8px;font-size:16px;"></i>' +
+      '您确定要删除所选的 <b>' + (count || 0) + '</b> 条记录吗？' +
+    '</div>' +
+    '<div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 28px;border-top:1px solid #f0f0f0;">' +
+      '<button class="btn btn-sm" onclick="closeConfirmDelete()">取 消</button>' +
+      '<button class="btn btn-primary btn-sm" style="background:#f53f3f;border-color:#f53f3f;" onclick="closeConfirmDelete()">确 定</button>' +
+    '</div>';
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+}
+
+function closeConfirmDelete() {
+  var el = document.getElementById('confirm-delete-overlay');
+  if (el) el.remove();
+}
+
+function confirmAction(action, target) {
+  var overlay = document.createElement('div');
+  overlay.id = 'confirm-action-overlay';
+  overlay.className = 'modal-overlay';
+
+  var iconColor = action === '清除数据' ? '#ff7d00' : '#3370ff';
+  var btnColor = action === '清除数据' ? '#ff7d00' : '#3370ff';
+
+  var modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.style.cssText = 'width:420px;display:flex;flex-direction:column;overflow:hidden;';
+  modal.innerHTML =
+    '<div class="modal-header">' +
+      '<span class="modal-title">确认操作</span>' +
+      '<span class="modal-close" onclick="closeConfirmAction()">&times;</span>' +
+    '</div>' +
+    '<div style="padding:24px 28px;font-size:14px;color:#333;line-height:1.8;">' +
+      '<i class="fa-solid fa-triangle-exclamation" style="color:' + iconColor + ';margin-right:8px;font-size:16px;"></i>' +
+      '您确定要' + action + '【<b>' + target + '</b>】吗？' +
+    '</div>' +
+    '<div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 28px;border-top:1px solid #f0f0f0;">' +
+      '<button class="btn btn-sm" onclick="closeConfirmAction()">取 消</button>' +
+      '<button class="btn btn-primary btn-sm" style="background:' + btnColor + ';border-color:' + btnColor + ';" onclick="closeConfirmAction()">确 定</button>' +
+    '</div>';
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+}
+
+function confirmBatchAction(action, count) {
+  var overlay = document.createElement('div');
+  overlay.id = 'confirm-action-overlay';
+  overlay.className = 'modal-overlay';
+
+  var iconColor = action === '清除数据' ? '#ff7d00' : '#3370ff';
+  var btnColor = action === '清除数据' ? '#ff7d00' : '#3370ff';
+
+  var modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.style.cssText = 'width:420px;display:flex;flex-direction:column;overflow:hidden;';
+  modal.innerHTML =
+    '<div class="modal-header">' +
+      '<span class="modal-title">确认操作</span>' +
+      '<span class="modal-close" onclick="closeConfirmAction()">&times;</span>' +
+    '</div>' +
+    '<div style="padding:24px 28px;font-size:14px;color:#333;line-height:1.8;">' +
+      '<i class="fa-solid fa-triangle-exclamation" style="color:' + iconColor + ';margin-right:8px;font-size:16px;"></i>' +
+      '您确定要' + action + '所选的 <b>' + (count || 0) + '</b> 条记录吗？' +
+    '</div>' +
+    '<div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 28px;border-top:1px solid #f0f0f0;">' +
+      '<button class="btn btn-sm" onclick="closeConfirmAction()">取 消</button>' +
+      '<button class="btn btn-primary btn-sm" style="background:' + btnColor + ';border-color:' + btnColor + ';" onclick="closeConfirmAction()">确 定</button>' +
+    '</div>';
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+}
+
+function closeConfirmAction() {
+  var el = document.getElementById('confirm-action-overlay');
+  if (el) el.remove();
+}

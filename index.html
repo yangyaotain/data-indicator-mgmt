@@ -113,30 +113,22 @@
             </div>
             <ul class="sub-menu open" id="indicator-submenu">
               <li class="active"><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('indicator-mgmt')"><i class="fa-solid fa-chart-line sub-icon"></i>指标管理</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('dimension-mgmt')"><i class="fa-solid fa-table-cells sub-icon"></i>维度管理</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('fact-table')"><i class="fa-solid fa-scroll sub-icon"></i>事实表</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('summary-table')"><i class="fa-solid fa-arrows-spin sub-icon"></i>汇总表</a></li>
               <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('indicator-audit')"><i class="fa-solid fa-list-check sub-icon"></i>指标审核</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('time-period')"><i class="fa-regular fa-clock sub-icon"></i>时间周期</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('indicator-model')"><i class="fa-solid fa-diagram-project sub-icon"></i>指标模型</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('dataset')"><i class="fa-solid fa-server sub-icon"></i>数据集</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('system-settings')"><i class="fa-solid fa-database sub-icon"></i>存储配置</a></li>
-              <!-- [隐藏菜单 - 可视化模块] -->
-              <!--
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('dashboard-mgmt')"><i class="fa-solid fa-tv sub-icon"></i>看板管理</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('dashboard')"><i class="fa-solid fa-gauge-high sub-icon"></i>仪表盘</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('data-insight')"><i class="fa-solid fa-magnifying-glass-chart sub-icon"></i>数据洞察</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('indicator-insight')"><i class="fa-solid fa-chart-pie sub-icon"></i>指标洞察</a></li>
-              -->
-              <!-- [隐藏菜单 - 数据管理模块] -->
-              <!--
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('query-widget')"><i class="fa-solid fa-magnifying-glass sub-icon"></i>查询控件</a></li>
-              -->
-              <!-- [隐藏菜单 - 配置管理模块] -->
-              <!--
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('component-mgmt')"><i class="fa-solid fa-puzzle-piece sub-icon"></i>组件管理</a></li>
-              <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('material-mgmt')"><i class="fa-regular fa-image sub-icon"></i>素材管理</a></li>
-              -->
+              <li class="sub-group active-group">
+                <div class="sub-group-header expanded" onclick="toggleSubGroup(this)">
+                  <span class="sub-group-icon"><i class="fa-solid fa-code-branch"></i></span>
+                  <span class="sub-group-label">指标开发</span>
+                  <i class="fa-solid fa-chevron-down sub-group-arrow"></i>
+                </div>
+                <ul class="sub-group-menu open">
+                  <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('dimension-mgmt')"><i class="fa-solid fa-table-cells sub-icon"></i>维度管理</a></li>
+                  <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('fact-table')"><i class="fa-solid fa-scroll sub-icon"></i>事实表</a></li>
+                  <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('summary-table')"><i class="fa-solid fa-arrows-spin sub-icon"></i>汇总表</a></li>
+                  <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('dataset')"><i class="fa-solid fa-server sub-icon"></i>数据集</a></li>
+                  <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('time-period')"><i class="fa-regular fa-clock sub-icon"></i>时间周期</a></li>
+                  <li><a href="#" onclick="event.preventDefault(); setActiveSubMenu(this); loadPage('indicator-model')"><i class="fa-solid fa-diagram-project sub-icon"></i>模板管理</a></li>
+                </ul>
+              </li>
             </ul>
           </li>
 
@@ -174,15 +166,15 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=2"></script>
+  <script src="js/app.js?v=4"></script>
   <script src="js/visualization.js?v=2"></script>
-  <script src="js/indicator-mgmt.js?v=3"></script>
-  <script src="js/dimension-mgmt.js?v=2"></script>
-  <script src="js/summary-table.js?v=2"></script>
-  <script src="js/indicator-model.js?v=7"></script>
-  <script src="js/time-period.js?v=2"></script>
-  <script src="js/fact-table.js?v=2"></script>
-  <script src="js/indicator-audit.js?v=3"></script>
-  <script src="js/dataset.js?v=2"></script>
+  <script src="js/indicator-mgmt.js?v=25"></script>
+  <script src="js/dimension-mgmt.js?v=10"></script>
+  <script src="js/summary-table.js?v=22"></script>
+  <script src="js/indicator-model.js?v=23"></script>
+  <script src="js/time-period.js?v=3"></script>
+  <script src="js/fact-table.js?v=12"></script>
+  <script src="js/indicator-audit.js?v=9"></script>
+  <script src="js/dataset.js?v=14"></script>
 </body>
 </html>

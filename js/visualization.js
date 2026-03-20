@@ -469,7 +469,7 @@ function openDashboardEditor(name) {
           <div style="display:flex; align-items:center; gap:8px;">
             <button class="btn btn-default btn-sm">预 览</button>
             <button class="btn btn-default btn-sm">另存为</button>
-            <button class="btn btn-primary btn-sm">保 存</button>
+            <button class="btn btn-primary btn-sm" onclick="loadPage('dashboard')">保 存</button>
           </div>
         </div>
 
@@ -1178,7 +1178,7 @@ function openInsightEditor(name) {
             <i class="fa-solid fa-pen" style="font-size:11px; color:#999; cursor:pointer;"></i>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <button class="btn btn-primary btn-sm">保 存</button>
+            <button class="btn btn-primary btn-sm" onclick="loadPage('indicator-insight')">保 存</button>
             <button class="btn btn-default btn-sm" onclick="loadPage('indicator-insight')">返 回</button>
           </div>
         </div>
