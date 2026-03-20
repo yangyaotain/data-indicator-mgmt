@@ -392,11 +392,17 @@ function _buildAttrRow(a, isFirst) {
   }
   var req = a.required ? '<span style="color:#f53f3f; margin-right:2px;">*</span>' : '';
   var borderStyle = isFirst ? 'border-left:3px solid #1890ff; background:#fafcff;' : 'border-left:3px solid transparent;';
-  var rightIcon = isFirst
-    ? '<i class="fa-solid fa-chevron-right" style="color:#1890ff; font-size:12px; flex-shrink:0;"></i>'
-    : a.system
-      ? '<span style="width:12px; flex-shrink:0;"></span>'
-      : '<i class="fa-regular fa-trash-can" style="color:#ff4d4f; cursor:pointer; font-size:12px; flex-shrink:0; opacity:0.7;" onclick="event.stopPropagation(); confirmDelete(\''+a.label+'\');"></i>';
+  var toggleKeys = ['code','name','dimension','timePeriod'];
+  var rightIcon;
+  if (isFirst) {
+    rightIcon = '<i class="fa-solid fa-chevron-right" style="color:#1890ff; font-size:12px; flex-shrink:0;"></i>';
+  } else if (toggleKeys.indexOf(a.key) >= 0) {
+    rightIcon = '<i class="fa-solid fa-eye attr-toggle-icon" style="color:#1890ff; cursor:pointer; font-size:12px; flex-shrink:0; opacity:0.8;" onclick="event.stopPropagation(); toggleAttrEnabled(this)" title="点击禁用"></i>';
+  } else if (a.system) {
+    rightIcon = '<span style="width:12px; flex-shrink:0;"></span>';
+  } else {
+    rightIcon = '<i class="fa-regular fa-trash-can" style="color:#ff4d4f; cursor:pointer; font-size:12px; flex-shrink:0; opacity:0.7;" onclick="event.stopPropagation(); confirmDelete(\''+a.label+'\');"></i>';
+  }
 
   return '<div data-attr-key="'+a.key+'" style="display:flex; align-items:center; gap:8px; padding:8px 12px 8px 8px; '+borderStyle+' border-bottom:1px solid #f0f0f0; cursor:pointer; min-height:42px;" onclick="selectModelAttr(this,\''+a.key+'\')">' +
     '<i class="fa-solid fa-grip-vertical" style="color:#d9d9d9; cursor:grab; font-size:11px; flex-shrink:0;"></i>' +
@@ -414,6 +420,54 @@ function _buildGroupHeader(groupName) {
     '<i class="fa-regular fa-pen-to-square" style="color:#1890ff; font-size:12px; cursor:pointer; opacity:0.7;" onclick="event.stopPropagation(); editGroupName(this)" title="编辑分组"></i>' +
     '<i class="fa-regular fa-trash-can" style="color:#ff4d4f; font-size:12px; cursor:pointer; opacity:0.7; margin-left:4px;" onclick="event.stopPropagation(); confirmDelete(\'' + groupName + '\')" title="删除分组"></i>' +
   '</div>';
+}
+
+function toggleAttrEnabled(iconEl) {
+  var row = iconEl.closest('[data-attr-key]');
+  if (!row) return;
+  var isEnabled = iconEl.classList.contains('fa-eye');
+  if (isEnabled) {
+    iconEl.classList.remove('fa-eye');
+    iconEl.classList.add('fa-eye-slash');
+    iconEl.style.color = '#c9cdd4';
+    iconEl.title = '点击启用';
+    row.style.background = 'rgba(245,63,63,0.06)';
+    row.style.borderLeft = '3px solid rgba(245,63,63,0.35)';
+    row.querySelectorAll('label, span, a, i:not(.attr-toggle-icon):not(.fa-grip-vertical)').forEach(function(el) {
+      el.style.color = '#c0c0c0';
+    });
+    row.querySelectorAll('input, select, textarea').forEach(function(el) {
+      el.disabled = true;
+      el.style.background = 'rgba(245,63,63,0.04)';
+      el.style.color = '#bbb';
+      el.style.borderColor = 'rgba(245,63,63,0.2)';
+    });
+    row.querySelectorAll('.fa-circle-plus, .fa-up-right-and-down-left-from-center').forEach(function(el) {
+      el.style.color = '#c0c0c0';
+    });
+  } else {
+    iconEl.classList.remove('fa-eye-slash');
+    iconEl.classList.add('fa-eye');
+    iconEl.style.color = '#1890ff';
+    iconEl.title = '点击禁用';
+    row.style.background = '';
+    row.style.borderLeft = '';
+    row.querySelectorAll('label').forEach(function(el) { el.style.color = '#333'; });
+    row.querySelectorAll('span').forEach(function(el) { el.style.color = ''; });
+    row.querySelectorAll('a').forEach(function(el) { el.style.color = '#1890ff'; });
+    row.querySelectorAll('.fa-regular.fa-circle').forEach(function(el) { el.style.color = ''; });
+    row.querySelectorAll('input, select, textarea').forEach(function(el) {
+      el.disabled = false;
+      el.style.background = '#fff';
+      el.style.color = '#333';
+      el.style.borderColor = '#d9d9d9';
+    });
+    row.querySelectorAll('select').forEach(function(el) {
+      el.style.color = el.value ? '#333' : '#999';
+    });
+    row.querySelectorAll('.fa-circle-plus').forEach(function(el) { el.style.color = '#1890ff'; });
+    row.querySelectorAll('.fa-up-right-and-down-left-from-center').forEach(function(el) { el.style.color = '#999'; });
+  }
 }
 
 function editGroupName(iconEl) {
@@ -481,6 +535,8 @@ function selectModelAttr(el, key) {
   var list = document.getElementById('model-attr-list');
   if (!list) return;
   list.querySelectorAll('[data-attr-key]').forEach(function(r) {
+    var isDisabled = r.querySelector('.fa-eye-slash.attr-toggle-icon');
+    if (isDisabled) return;
     r.style.borderLeft = '3px solid transparent';
     r.style.background = '';
     var icon = r.querySelector('.fa-chevron-right');
@@ -491,8 +547,11 @@ function selectModelAttr(el, key) {
       icon.style.cursor = 'pointer';
     }
   });
-  el.style.borderLeft = '3px solid #1890ff';
-  el.style.background = '#fafcff';
+  var isCurrentDisabled = el.querySelector('.fa-eye-slash.attr-toggle-icon');
+  if (!isCurrentDisabled) {
+    el.style.borderLeft = '3px solid #1890ff';
+    el.style.background = '#fafcff';
+  }
   var lastIcon = el.querySelector('.fa-trash-can');
   if (lastIcon) {
     lastIcon.className = 'fa-solid fa-chevron-right';
