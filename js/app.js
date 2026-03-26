@@ -48,6 +48,7 @@ const pageConfig = {
   'data-insight':      { title: '数据洞察', icon: 'fa-solid fa-magnifying-glass-chart', desc: '深度分析数据，发现业务洞察' },
   'indicator-insight': { title: '指标洞察', icon: 'fa-solid fa-chart-pie', desc: '分析指标趋势与关联关系' },
   // 指标体系
+  'indicator-ledger': { title: '指标台账', icon: 'fa-solid fa-book', desc: '查看指标台账，浏览完整指标清单' },
   'indicator-mgmt':  { title: '指标管理', icon: 'fa-solid fa-chart-line', desc: '管理和维护数据指标定义、分类与配置' },
   'dimension-mgmt':  { title: '维度管理', icon: 'fa-solid fa-table-cells', desc: '管理指标的分析维度与维度属性' },
   'summary-table':   { title: '汇总表', icon: 'fa-solid fa-arrows-spin', desc: '查看和管理指标汇总数据表' },
@@ -82,6 +83,7 @@ function loadPage(pageName) {
   const renderers = {
     'dashboard-mgmt': renderDashboardMgmt,
     'dashboard': renderDashboard,
+    'indicator-ledger': renderIndicatorLedger,
     'indicator-mgmt': renderIndicatorMgmt,
     'dimension-mgmt': renderDimensionMgmt,
     'summary-table': renderSummaryTable,
@@ -177,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPage(hash);
     activateMenuByPage(hash);
   } else {
-    loadPage('indicator-mgmt');
+    loadPage('indicator-ledger');
   }
 });
 

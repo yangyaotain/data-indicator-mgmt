@@ -83,7 +83,7 @@ function renderIndicatorMgmt(container, config) {
                 <th>指标编码</th>
                 <th>指标名称</th>
                 <th>指标类型</th>
-                <th>锁定状态</th>
+                <th>绑定状态</th>
                 <th>上线状态</th>
                 <th>审核状态</th>
                 <th>版本</th>
@@ -108,21 +108,21 @@ function renderIndicatorMgmt(container, config) {
 
 function generateIndicatorRows() {
   const data = [
-    { cat: '人力资源/员工关系/人员...', code: 'CRH000_ID_010003_000033', name: '在岗职工人数占职工总人...', type: '衍生指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
-    { cat: '人力资源/员工关系/人员...', code: 'CRH000_ID_010003_000032', name: '在岗职工人数', type: '派生指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
-    { cat: '人力资源/员工关系/人员...', code: 'CRH000_ID_010003_000031', name: '职工人数', type: '原子指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
-    { cat: '指标体系/免审', code: '000018', name: '生产订单', type: '原子指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V2' },
-    { cat: '财务数据指标', code: '000017', name: '营业收入', type: '原子指标', lock: '已锁定', online: '未上线', audit: '—', ver: 'V1' },
-    { cat: '指标体系', code: '000012', name: '关闭生产订单数量', type: '派生指标', lock: '已锁定', online: '未上线', audit: '—', ver: 'V1' },
-    { cat: '指标体系', code: '000013', name: '取消生产订单数量', type: '派生指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
-    { cat: '指标体系', code: '000010', name: '周完成生产订单总数', type: '派生指标', lock: '已锁定', online: '已上线', audit: '—', ver: 'V1' },
-    { cat: '指标体系', code: '000011', name: '日完成生产订单总数', type: '派生指标', lock: '已锁定', online: '已上线', audit: '上线审核通过', ver: 'V1' },
-    { cat: '指标体系', code: '000009', name: '生产订单总数', type: '派生指标', lock: '已锁定', online: '已上线', audit: '上线审核通过', ver: 'V1' },
+    { cat: '人力资源/员工关系/人员...', code: 'CRH000_ID_010003_000033', name: '在岗职工人数占职工总人...', type: '衍生指标', bind: '已绑定', online: '已上线', audit: '—', ver: 'V1' },
+    { cat: '人力资源/员工关系/人员...', code: 'CRH000_ID_010003_000032', name: '在岗职工人数', type: '派生指标', bind: '已绑定', online: '已上线', audit: '—', ver: 'V1' },
+    { cat: '人力资源/员工关系/人员...', code: 'CRH000_ID_010003_000031', name: '职工人数', type: '原子指标', bind: '已绑定', online: '已上线', audit: '—', ver: 'V1' },
+    { cat: '指标体系/免审', code: '000018', name: '生产订单', type: '原子指标', bind: '已绑定', online: '已上线', audit: '—', ver: 'V2' },
+    { cat: '财务数据指标', code: '000017', name: '营业收入', type: '原子指标', bind: '未绑定', online: '未上线', audit: '—', ver: 'V1' },
+    { cat: '指标体系', code: '000012', name: '关闭生产订单数量', type: '派生指标', bind: '未绑定', online: '未上线', audit: '—', ver: 'V1' },
+    { cat: '指标体系', code: '000013', name: '取消生产订单数量', type: '派生指标', bind: '已绑定', online: '已上线', audit: '—', ver: 'V1' },
+    { cat: '指标体系', code: '000010', name: '周完成生产订单总数', type: '派生指标', bind: '已绑定', online: '已上线', audit: '—', ver: 'V1' },
+    { cat: '指标体系', code: '000011', name: '日完成生产订单总数', type: '派生指标', bind: '已绑定', online: '已上线', audit: '上线审核通过', ver: 'V1' },
+    { cat: '指标体系', code: '000009', name: '生产订单总数', type: '派生指标', bind: '未绑定', online: '已上线', audit: '上线审核通过', ver: 'V1' },
   ];
 
   return data.map(row => {
     const typeClass = row.type === '原子指标' ? 'badge-blue' : row.type === '派生指标' ? 'badge-green' : 'badge-orange';
-    const lockBadge = row.lock === '已锁定' ? '<span class="badge badge-blue">已锁定</span>' : '<span class="badge badge-gray">未锁定</span>';
+    const bindBadge = row.bind === '已绑定' ? '<span class="badge badge-blue">已绑定</span>' : '<span class="badge badge-gray">未绑定</span>';
     const onlineBadge = row.online === '已上线' ? '<span class="badge badge-green">已上线</span>' : '<span class="badge badge-gray">未上线</span>';
     const auditText = row.audit === '—' ? '—' : `<span class="badge badge-green">${row.audit}</span>`;
     let bindFn = 'openDataBindingPage()';
@@ -136,12 +136,11 @@ function generateIndicatorRows() {
         <td>${row.code}</td>
         <td><a class="action-link" onclick="openVersionPage('${row.name}')">${row.name}</a></td>
         <td><span class="badge ${typeClass}">${row.type}</span></td>
-        <td>${lockBadge}</td>
+        <td>${bindBadge}</td>
         <td>${onlineBadge}</td>
         <td>${auditText}</td>
         <td>${row.ver}</td>
         <td class="op-cell">
-          <a class="action-link" onclick="openIndicatorDetail('${row.name}','${row.code}','${row.type}','${row.cat}')">详情</a>
           <a class="action-link" onclick="openIndicatorForm('edit')">编辑</a>
           <a class="action-link" onclick="${bindFn}">数据绑定</a>
           <a class="action-link" style="color:#f53f3f" onclick="confirmDelete('${row.name}')">删除</a>
@@ -164,7 +163,7 @@ function openIndicatorForm(mode, data) {
   const contentArea = document.getElementById('content-area');
   const isEdit = mode === 'edit';
   const d = data || {
-    seq: isEdit ? '1' : '', category:'', catCode1:'', catName1:'', catCode2:'', catName2:'', catCode3:'', catName3:'',
+    category:'',
     code: isEdit ? '000021' : '', name: isEdit ? '日完成占比' : '',
     type: isEdit ? '衍生指标' : '', definition:'', caliber:'',
     formula:'', unit: isEdit ? '%' : '',
@@ -185,20 +184,6 @@ function openIndicatorForm(mode, data) {
       </div>
       <div class="edit-page-body">
         <div class="form-grid">
-          <!-- 序号（无分组） -->
-          <div class="form-row">
-            <div class="form-cell">
-              <div class="form-group">
-                <label class="form-label required">序号</label>
-                <div class="form-field">
-                  <input type="text" class="form-control" value="${d.seq}">
-                  ${h}
-                </div>
-              </div>
-            </div>
-            <div class="form-cell"></div>
-          </div>
-
           <!-- ===== 分类属性 ===== -->
           <div style="display:flex;align-items:center;gap:8px;padding:10px 0 6px 0;margin-top:8px;border-bottom:1px solid #e8e8e8;margin-bottom:8px;">
             <i class="fa-solid fa-layer-group" style="color:#1890ff;font-size:13px;"></i>
@@ -251,66 +236,6 @@ function openIndicatorForm(mode, data) {
                       </div>
                     </div>
                   </div>
-                  ${h}
-                </div>
-              </div>
-            </div>
-            <div class="form-cell">
-              <div class="form-group">
-                <label class="form-label required">一级数据分类编码</label>
-                <div class="form-field">
-                  <input type="text" class="form-control" value="${d.catCode1}" placeholder="请输入">
-                  ${h}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell">
-              <div class="form-group">
-                <label class="form-label required">一级数据分类名称</label>
-                <div class="form-field">
-                  <input type="text" class="form-control" value="${d.catName1}" placeholder="请输入">
-                  ${h}
-                </div>
-              </div>
-            </div>
-            <div class="form-cell">
-              <div class="form-group">
-                <label class="form-label required">二级数据分类编码</label>
-                <div class="form-field">
-                  <input type="text" class="form-control" value="${d.catCode2}" placeholder="请输入">
-                  ${h}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell">
-              <div class="form-group">
-                <label class="form-label required">二级数据分类名称</label>
-                <div class="form-field">
-                  <input type="text" class="form-control" value="${d.catName2}" placeholder="请输入">
-                  ${h}
-                </div>
-              </div>
-            </div>
-            <div class="form-cell">
-              <div class="form-group">
-                <label class="form-label required">三级数据分类编码</label>
-                <div class="form-field">
-                  <input type="text" class="form-control" value="${d.catCode3}" placeholder="请输入">
-                  ${h}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell">
-              <div class="form-group">
-                <label class="form-label required">三级数据分类名称</label>
-                <div class="form-field">
-                  <input type="text" class="form-control" value="${d.catName3}" placeholder="请输入">
                   ${h}
                 </div>
               </div>
@@ -1959,8 +1884,9 @@ function selectFcSqlField(el, fieldName) {
 }
 
 // ============ 指标详情页面 ============
-function openIndicatorDetail(name, code, type, category) {
+function openIndicatorDetail(name, code, type, category, fromPage) {
   var contentArea = document.getElementById('content-area');
+  var backPage = fromPage || 'indicator-mgmt';
 
   var basicHtml = _buildIndicatorBasicInfo(name, code, type, category);
   var techHtml = _buildIndicatorTechInfo(name, code, type);
@@ -1970,7 +1896,7 @@ function openIndicatorDetail(name, code, type, category) {
       '<div class="edit-page-header">' +
         '<span class="edit-page-title">指标详情 - ' + name + '</span>' +
         '<div class="edit-page-actions">' +
-          '<button class="btn btn-sm" onclick="loadPage(\'indicator-mgmt\')">返回</button>' +
+          '<button class="btn btn-sm" onclick="loadPage(\'' + backPage + '\')">返回</button>' +
         '</div>' +
       '</div>' +
       '<div style="border-bottom:1px solid #e8e8e8;display:flex;gap:0;padding:0 20px;background:#fff;">' +
@@ -2024,16 +1950,8 @@ function _buildDetailGroupHeader(title) {
 function _buildIndicatorBasicInfo(name, code, type, category) {
   var html = '';
 
-  html += _buildDetailRow('序号', '1', true);
-
   html += _buildDetailGroupHeader('分类属性');
   html += _buildDetailRow('所属分类', category || '人力资源/员工关系/人员规模', true);
-  html += _buildDetailRow('一级数据分类编码', 'RLZY', true);
-  html += _buildDetailRow('一级数据分类名称', '人力资源', true);
-  html += _buildDetailRow('二级数据分类编码', 'RLZY_YGGX', true);
-  html += _buildDetailRow('二级数据分类名称', '员工关系', true);
-  html += _buildDetailRow('三级数据分类编码', 'RLZY_YGGX_RYGM', true);
-  html += _buildDetailRow('三级数据分类名称', '人员规模', true);
 
   html += _buildDetailGroupHeader('业务属性');
   html += _buildDetailRow('指标编码', code || 'CRH000_ID_010003_000033', true);

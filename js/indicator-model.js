@@ -1,14 +1,7 @@
 // 指标模型模块
 
 var _modelAttrs = [
-  { key:'seq', label:'序号', required:true, type:'text', placeholder:'', system:true, help:'自增序号' },
   { key:'category', label:'所属分类', required:true, type:'select', placeholder:'请选择所属分类', system:true, group:'分类属性', help:'把企业里各种各样的指标，依据其性质、用途、业务领域等，可以进行多层次的关联' },
-  { key:'catCode1', label:'一级数据分类编码', required:true, type:'text', placeholder:'请输入', group:'分类属性', help:'一级数据分类编码依据数据资产管理平台已有的一级数据分类编码进行填写；如为新增数据分类，需按数据分类名称拼音首字母大写组织相关领域业务代表讨论形成方案，并提交运营中心组织审核并推动发布。' },
-  { key:'catName1', label:'一级数据分类名称', required:true, type:'text', placeholder:'请输入', group:'分类属性', help:'一级数据分类依据《集团数据架构管理办法》的【附件七-一级数据资产目录】进行分类，若需新增或变更现有一级数据分类，由关键用户组织相关领域业务代表讨论形成方案，并提交运营中心组织审核并推动发布。' },
-  { key:'catCode2', label:'二级数据分类编码', required:true, type:'text', placeholder:'请输入', group:'分类属性', help:'二级数据分类编码依据数据资产管理平台已有的一级数据分类编码进行填写；如为新增数据分类，需按数据分类名称拼音首字母大写填写，不允许使用下划线"_"以外的特殊符号；如非新增分类，应保持与原分类编码一致。' },
-  { key:'catName2', label:'二级数据分类名称', required:true, type:'text', placeholder:'请输入', group:'分类属性', help:'二级数据分类依据《集团数据架构管理办法》的【附件七-二级数据资产目录】进行分类，若需新增或变更现有二级数据分类，由关键用户组织相关领域业务代表讨论形成方案，并提交运营中心组织审核并推动发布。' },
-  { key:'catCode3', label:'三级数据分类编码', required:true, type:'text', placeholder:'请输入', group:'分类属性', help:'三级数据分类编码依据数据资产管理平台已有的三级数据分类编码进行填写；如为新增数据分类，需按数据分类名称拼音首字母大写填写，不允许使用下划线"_"以外的特殊符号；如非新增分类，应保持与原分类编码一致。' },
-  { key:'catName3', label:'三级数据分类名称', required:true, type:'text', placeholder:'请输入', group:'分类属性', help:'三级数据分类基于集团部门或成员公司已有的三级数据分类进行分类，已有的数据分类可通过数据资产管理平台进行查询；若需新增或变更现有三级数据分类，由关键用户组织相关领域业务代表讨论形成方案，并提交运营中心组织审核并推动发布。' },
   { key:'code', label:'指标编码', required:true, type:'text', placeholder:'请输入', system:true, group:'业务属性', help:'根据指标编码规则进行编码' },
   { key:'name', label:'指标名称', required:true, type:'text', placeholder:'请输入', system:true, group:'业务属性', help:'描述指标的业务名称（必填）' },
   { key:'definition', label:'指标定义', required:true, type:'textarea', placeholder:'请输入', group:'业务属性', help:'明确给出指标的业务定义，确保对指标理解的一致性（必填）' },
@@ -30,12 +23,6 @@ var _modelAttrs = [
 ];
 
 var _modelAttrConfigs = {
-  'seq': {
-    title:'序号', formType:'文本框', requiredOn:true,
-    sections: [],
-    defaultType:'text', defaultValue:'',
-    hint:'自增序号', hintCount:4
-  },
   'category': {
     title:'所属分类', formType:'单选下拉树', requiredOn:true, relationValue:'华润业务分类',
     sections: [
@@ -47,42 +34,6 @@ var _modelAttrConfigs = {
     ],
     defaultValue:'人员规模',
     hint:'把企业里各种各样的指标，依据其性质、用途、业务领域等，可以分到不同类别里', hintCount:37
-  },
-  'catCode1': {
-    title:'一级数据分类编码', formType:'文本框', requiredOn:true,
-    sections: [],
-    defaultType:'text', defaultValue:'',
-    hint:'依据数据资产管理平台已有的一级数据分类编码进行填写', hintCount:24
-  },
-  'catName1': {
-    title:'一级数据分类名称', formType:'文本框', requiredOn:true,
-    sections: [],
-    defaultType:'text', defaultValue:'',
-    hint:'依据《集团数据架构管理办法》的【附件七-一级数据资产目录】进行分类', hintCount:32
-  },
-  'catCode2': {
-    title:'二级数据分类编码', formType:'文本框', requiredOn:true,
-    sections: [],
-    defaultType:'text', defaultValue:'',
-    hint:'依据数据资产管理平台已有的一级数据分类编码进行填写', hintCount:24
-  },
-  'catName2': {
-    title:'二级数据分类名称', formType:'文本框', requiredOn:true,
-    sections: [],
-    defaultType:'text', defaultValue:'',
-    hint:'依据《集团数据架构管理办法》的【附件七-二级数据资产目录】进行分类', hintCount:32
-  },
-  'catCode3': {
-    title:'三级数据分类编码', formType:'文本框', requiredOn:true,
-    sections: [],
-    defaultType:'text', defaultValue:'',
-    hint:'依据数据资产管理平台已有的三级数据分类编码进行填写', hintCount:24
-  },
-  'catName3': {
-    title:'三级数据分类名称', formType:'文本框', requiredOn:true,
-    sections: [],
-    defaultType:'text', defaultValue:'',
-    hint:'基于集团部门或成员公司已有的三级数据分类进行分类', hintCount:24
   },
   'code': {
     title:'指标编码', formType:'文本框', requiredOn:true,
@@ -508,8 +459,8 @@ function renderIndicatorModel(container, config) {
     rows += _buildAttrRow(a, idx === 0);
   });
 
-  _currentCfgKey = 'seq';
-  var initCfg = _modelAttrConfigs['seq'];
+  _currentCfgKey = 'category';
+  var initCfg = _modelAttrConfigs['category'];
 
   container.innerHTML =
     '<div style="display:flex; height:100%; background:#fff; overflow:hidden;">' +

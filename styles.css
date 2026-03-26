@@ -2649,3 +2649,35 @@ textarea.form-control {
   border-color: var(--primary);
   color: var(--primary);
 }
+
+/* ===== 指标台账表格 ===== */
+.ledger-table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; }
+.ledger-table thead tr:first-child th { position: sticky; top: 0; z-index: 3; border: 1px solid #e8e8e8; }
+.ledger-table thead tr:nth-child(2) th { position: sticky; top: 33px; z-index: 3; border: 1px solid #e8e8e8; }
+.ledger-table tbody td { border: 1px solid #f0f0f0; }
+.ledger-table tbody tr:hover td { background: #f0f7ff; }
+.ledger-table thead th:last-child,
+.ledger-table tbody td:last-child { position: sticky; right: 0; box-shadow: -3px 0 6px rgba(0,0,0,.06); }
+.ledger-table thead tr:first-child th:last-child { z-index: 6; }
+.ledger-table tbody td:last-child { z-index: 1; background: #fff; }
+.ledger-table tbody tr:hover td:last-child { background: #f0f7ff; }
+.ledger-wrap { overflow-x: auto; overflow-y: auto; max-height: calc(100vh - 240px); }
+.ledger-wrap::-webkit-scrollbar { width: 8px; height: 8px; }
+.ledger-wrap::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+.ledger-wrap::-webkit-scrollbar-thumb:hover { background: #999; }
+.ledger-wrap::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
+.ledger-note-icon { color: #bbb; font-size: 11px; margin-left: 3px; cursor: help; transition: color .2s; }
+.ledger-note-icon:hover { color: #1890ff; }
+.badge-red { background: #fff1f0; color: #f5222d; }
+.ledger-dd-item { padding: 6px 12px; font-size: 13px; color: #333; cursor: pointer; transition: background .15s; }
+.ledger-dd-item:hover { background: #f0f7ff; color: #3370ff; }
+.ledger-dd-item.selected { background: #e8f4ff; color: #3370ff; font-weight: 500; }
+
+/* 台账目录树 */
+.ltree-label { display: flex; align-items: center; gap: 5px; height: 32px; padding-right: 8px; cursor: pointer; font-size: 13px; color: #333; border-radius: 4px; transition: background .15s; white-space: nowrap; }
+.ltree-label:hover { background: #f0f5ff; }
+.ltree-label.active { background: #e6f4ff; color: #1890ff; font-weight: 500; }
+.ltree-label .cat-icon { font-size: 13px; color: #f5a623; flex-shrink: 0; }
+.ltree-arrow { font-size: 10px; color: #999; width: 14px; text-align: center; cursor: pointer; flex-shrink: 0; transition: color .15s; }
+.ltree-arrow:hover { color: #1890ff; }
+.ltree-arrow-placeholder { width: 14px; flex-shrink: 0; }
