@@ -120,6 +120,153 @@ function selectCatNode(el) {
   el.classList.add('selected');
 }
 
+// ============ 公共指标分类树数据 ============
+var _commonCatTree = [
+  { name:'全部', open:true, children:[
+    { name:'人员信息管理', open:true, children:[
+      { name:'日常人事管理', open:true, children:[
+        { name:'员工信息管理' },
+        { name:'考勤管理' },
+      ]},
+      { name:'薪酬福利管理', open:false, children:[
+        { name:'薪资核算' },
+        { name:'社保公积金' },
+      ]},
+      { name:'培训发展', open:false, children:[
+        { name:'培训计划' },
+        { name:'培训评估' },
+      ]},
+    ]},
+    { name:'财务管理', open:true, children:[
+      { name:'收入管理', open:true, children:[
+        { name:'营业收入' },
+        { name:'利润分析' },
+      ]},
+      { name:'成本管理', open:false, children:[
+        { name:'生产成本' },
+        { name:'期间费用' },
+      ]},
+      { name:'预算管理' },
+    ]},
+    { name:'生产管理', open:false, children:[
+      { name:'订单管理', children:[
+        { name:'生产订单' },
+        { name:'工单跟踪' },
+      ]},
+      { name:'质量管理', children:[
+        { name:'质量检测' },
+        { name:'缺陷统计' },
+      ]},
+      { name:'设备管理' },
+    ]},
+    { name:'销售管理', open:false, children:[
+      { name:'客户管理', children:[
+        { name:'客户分析' },
+        { name:'客户留存' },
+      ]},
+      { name:'订单管理' },
+    ]},
+    { name:'采购管理', open:false, children:[
+      { name:'供应商管理' },
+      { name:'采购订单' },
+    ]},
+    { name:'安全环保', open:false, children:[
+      { name:'安全生产' },
+      { name:'环境监测' },
+    ]},
+  ]}
+];
+
+function buildCommonCatTree(containerId, treeData) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var data = treeData || _commonCatTree;
+  container.innerHTML = _buildCommonTreeNodes(data, 0);
+  var first = container.querySelector('.ltree-label');
+  if (first) first.classList.add('active');
+}
+
+function _buildCommonTreeNodes(nodes, depth) {
+  var html = '';
+  for (var i = 0; i < nodes.length; i++) {
+    var n = nodes[i];
+    var hasChildren = n.children && n.children.length > 0;
+    var isOpen = n.open !== false && hasChildren;
+    var pad = depth === 0 ? 8 : (depth * 18 + 8);
+    html += '<div class="ltree-item">';
+    html += '<div class="ltree-label" style="padding-left:' + pad + 'px;" onclick="selectCommonTreeNode(this)">';
+    if (hasChildren) {
+      html += '<i class="fa-solid ' + (isOpen ? 'fa-chevron-down' : 'fa-chevron-right') + ' ltree-arrow" onclick="event.stopPropagation();toggleCommonTree(this)"></i>';
+    } else {
+      html += '<span class="ltree-arrow-placeholder"></span>';
+    }
+    if (depth === 0 && n.name === '全部') {
+      html += '<i class="fa-solid fa-folder cat-icon" style="color:#3370ff"></i>';
+    } else if (hasChildren && isOpen) {
+      html += '<i class="fa-regular fa-folder-open cat-icon"></i>';
+    } else {
+      html += '<i class="fa-regular fa-folder cat-icon"></i>';
+    }
+    html += '<span>' + n.name + '</span>';
+    html += '</div>';
+    if (hasChildren) {
+      html += '<div class="ltree-children" style="' + (isOpen ? '' : 'display:none;') + '">';
+      html += _buildCommonTreeNodes(n.children, depth + 1);
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  return html;
+}
+
+function toggleCommonTree(arrowEl) {
+  var label = arrowEl.closest('.ltree-label');
+  var children = label.nextElementSibling;
+  if (!children) return;
+  var isOpen = children.style.display !== 'none';
+  if (isOpen) {
+    children.style.display = 'none';
+    arrowEl.classList.remove('fa-chevron-down');
+    arrowEl.classList.add('fa-chevron-right');
+    var fi = label.querySelector('.cat-icon');
+    if (fi) { fi.classList.remove('fa-folder-open'); fi.classList.add('fa-folder'); }
+  } else {
+    children.style.display = '';
+    arrowEl.classList.remove('fa-chevron-right');
+    arrowEl.classList.add('fa-chevron-down');
+    var fi = label.querySelector('.cat-icon');
+    if (fi) { fi.classList.remove('fa-folder'); fi.classList.add('fa-folder-open'); }
+  }
+}
+
+function selectCommonTreeNode(labelEl) {
+  var tree = labelEl.closest('.category-tree');
+  tree.querySelectorAll('.ltree-label').forEach(function(l) { l.classList.remove('active'); });
+  labelEl.classList.add('active');
+}
+
+function buildCommonCatDropdownTree(containerId) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = _buildDropdownTreeNodes(_commonCatTree[0].children, 0);
+}
+
+function _buildDropdownTreeNodes(nodes, depth) {
+  var html = '';
+  var pad = 12 + depth * 20;
+  for (var i = 0; i < nodes.length; i++) {
+    var n = nodes[i];
+    var hasChildren = n.children && n.children.length > 0;
+    html += '<div class="cat-tree-node" style="padding:5px ' + 12 + 'px 5px ' + pad + 'px;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation();selectCatTreeNode(this,\'' + n.name + '\')">';
+    html += '<i class="fa-solid fa-folder" style="color:#f5a623;font-size:13px;"></i><span style="font-size:13px;color:#333;">' + n.name + '</span>';
+    html += '</div>';
+    if (hasChildren) {
+      html += _buildDropdownTreeNodes(n.children, depth + 1);
+    }
+  }
+  return html;
+}
+
 // 更多操作下拉
 function toggleMoreMenu(el) {
   const allMenus = document.querySelectorAll('.more-actions.open');

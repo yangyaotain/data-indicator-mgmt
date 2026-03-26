@@ -10,21 +10,7 @@ function renderIndicatorAudit(container, config) {
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" placeholder="请输入...">
         </div>
-        <div class="category-tree">
-          <div class="cat-node selected" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 全部
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 财务数据指标
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <span class="cat-toggle" style="transform:rotate(90deg)"><i class="fa-solid fa-caret-right"></i></span>
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 指标体系
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)" style="padding-left:32px">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 免审
-          </div>
-        </div>
+        <div class="category-tree" id="audit-tree"></div>
       </div>
       <div class="split-right">
         <div class="ind-tab-bar">
@@ -39,6 +25,7 @@ function renderIndicatorAudit(container, config) {
       </div>
     </div>`;
   renderAuditPendingTab();
+  buildCommonCatTree('audit-tree');
 }
 
 function openAuditDetailPage(name, code, category) {

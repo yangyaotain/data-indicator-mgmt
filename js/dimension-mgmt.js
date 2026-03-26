@@ -2,7 +2,7 @@
 
 var _dimRows = [
   { code:'di3',      name:'订单状态',   cat:'指标体系', dataType:'manual',  desc:'' },
-  { code:'device',   name:'设备维度',   cat:'指标体系', dataType:'dynamic', desc:'设备基础维度数据' },
+  { code:'device',   name:'指标分类维度表',   cat:'指标体系', dataType:'dynamic', desc:'指标分类维度数据' },
   { code:'test',     name:'客户',       cat:'指标体系', dataType:'manual',  desc:'' },
   { code:'org',      name:'组织架构',   cat:'指标体系', dataType:'dynamic', desc:'公司组织架构维度' },
   { code:'area',     name:'区域',       cat:'指标体系', dataType:'manual',  desc:'销售区域划分' },
@@ -48,21 +48,7 @@ function renderDimensionMgmt(container, config) {
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" placeholder="搜索">
         </div>
-        <div class="category-tree">
-          <div class="cat-node selected" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 全部
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 前兰维度
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> test
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <span class="cat-toggle"><i class="fa-solid fa-caret-right"></i></span>
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 指标体系
-          </div>
-        </div>
+        <div class="category-tree" id="dimension-tree"></div>
       </div>
       <!-- 右侧内容 -->
       <div class="split-right">
@@ -116,6 +102,7 @@ function renderDimensionMgmt(container, config) {
         </div>
       </div>
     </div>`;
+  buildCommonCatTree('dimension-tree');
 }
 
 // ============ 维度新建/编辑表单 ============

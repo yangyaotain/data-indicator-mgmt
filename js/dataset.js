@@ -39,27 +39,7 @@ function renderDataset(container, config) {
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" placeholder="请输入...">
         </div>
-        <div class="category-tree">
-          <div class="cat-node selected" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 全部
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> test
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 物流项目
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <span class="cat-toggle"><i class="fa-solid fa-caret-right"></i></span>
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 销售订单
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 维度数据集
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 阳标体系
-          </div>
-        </div>
+        <div class="category-tree" id="dataset-tree"></div>
       </div>
       <div class="split-right">
         <div class="ind-toolbar">
@@ -117,6 +97,7 @@ function renderDataset(container, config) {
         </div>
       </div>
     </div>`;
+  buildCommonCatTree('dataset-tree');
 }
 
 // ============ 数据集新建/编辑页面 ============

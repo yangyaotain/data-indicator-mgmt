@@ -24,7 +24,7 @@ var _modelAttrs = [
 
 var _modelAttrConfigs = {
   'category': {
-    title:'所属分类', formType:'单选下拉树', requiredOn:true, relationValue:'华润业务分类',
+    title:'所属分类', formType:'单选下拉树', requiredOn:true, relationValue:'指标分类维度表',
     sections: [
       { type:'classification', title:'配置导入模版的分类属性标题', items:[
         { level:'一级分类标题', value:'一级数据分类名称' },
@@ -39,7 +39,7 @@ var _modelAttrConfigs = {
     title:'指标编码', formType:'文本框', requiredOn:true,
     sections: [
       { type:'encodingRule', connector:'_', rules:[
-        { ruleType:'分类码', extra:'select', extraLabel:'分类表：', extraValue:'华润业务分类' },
+        { ruleType:'分类码', extra:'select', extraLabel:'分类表：', extraValue:'指标分类维度表' },
         { ruleType:'流水码', extra:'numbers', lengthVal:'6', startVal:'31' },
       ]},
     ],
@@ -520,33 +520,24 @@ function selectModelAttr(el, key) {
 
 // ============ 模板管理 - 分类属性目录树 ============
 function _buildModelCatTree() {
-  var ic = 'fa-solid fa-folder';
-  var ico = 'fa-solid fa-folder-open';
-  var cs = 'color:#f5a623; font-size:13px;';
-  var ns = 'font-size:13px; color:#333;';
-  var caret = '<i class="fa-solid fa-caret-right" style="color:#999; font-size:10px; width:10px; transition:transform .2s; transform:rotate(90deg);"></i>';
+  return _buildModelCatNodes(_commonCatTree[0].children, 0);
+}
 
-  function leaf(name, indent) {
-    return '<div style="padding:5px 12px 5px '+indent+'px; cursor:pointer; display:flex; align-items:center; gap:6px;" ' +
+function _buildModelCatNodes(nodes, depth) {
+  var html = '';
+  var pad = 12 + depth * 20;
+  for (var i = 0; i < nodes.length; i++) {
+    var n = nodes[i];
+    var hasChildren = n.children && n.children.length > 0;
+    html += '<div style="padding:5px 12px 5px '+pad+'px; cursor:pointer; display:flex; align-items:center; gap:6px;" ' +
       'onmouseover="this.style.background=\'#f2f3f5\'" onmouseout="this.style.background=\'\'" ' +
-      'onclick="event.stopPropagation(); selectModelCatNode(this,\''+name+'\')">' +
-      '<i class="'+ic+'" style="'+cs+'"></i><span style="'+ns+'">'+name+'</span></div>';
+      'onclick="event.stopPropagation(); selectModelCatNode(this,\''+n.name+'\')">' +
+      '<i class="fa-solid fa-folder" style="color:#f5a623; font-size:13px;"></i><span style="font-size:13px; color:#333;">'+n.name+'</span></div>';
+    if (hasChildren) {
+      html += _buildModelCatNodes(n.children, depth + 1);
+    }
   }
-
-  function branch(name, indent, children) {
-    return '<div style="padding:5px 12px 5px '+indent+'px; cursor:pointer; display:flex; align-items:center; gap:6px;" ' +
-      'onmouseover="this.style.background=\'#f2f3f5\'" onmouseout="this.style.background=\'\'" ' +
-      'onclick="event.stopPropagation(); var s=this.nextElementSibling; s.style.display=s.style.display===\'none\'?\'block\':\'none\'; var c=this.querySelector(\'.fa-caret-right\'); if(c) c.style.transform=c.style.transform===\'rotate(90deg)\'?\'rotate(0deg)\':\'rotate(90deg)\';">' +
-      caret + '<i class="'+ico+'" style="'+cs+'"></i><span style="'+ns+'">'+name+'</span></div>' +
-      '<div style="display:block;">' + children + '</div>';
-  }
-
-  return leaf('财务数据指标', 12) +
-    branch('指标体系', 12, leaf('免审', 40)) +
-    branch('华润集团', 12, leaf('集团（不区分业态）', 40)) +
-    branch('人力资源', 12,
-      branch('员工关系', 40, leaf('人员规模', 68))
-    );
+  return html;
 }
 
 function toggleModelCatTree(wrapper) {

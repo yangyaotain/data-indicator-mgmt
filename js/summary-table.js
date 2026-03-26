@@ -66,14 +66,7 @@ function renderSummaryTable(container, config) {
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" placeholder="搜索">
         </div>
-        <div class="category-tree">
-          <div class="cat-node selected" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 全部
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder" style="color:#f90"></i> 指标体系
-          </div>
-        </div>
+        <div class="category-tree" id="summary-tree"></div>
       </div>
       <div class="split-right">
         <div class="ind-tab-bar">
@@ -133,6 +126,7 @@ function renderSummaryTable(container, config) {
         </div>
       </div>
     </div>`;
+  buildCommonCatTree('summary-tree');
 }
 
 // ============ 汇总表新建/编辑页面 ============

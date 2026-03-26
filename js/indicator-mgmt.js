@@ -18,26 +18,7 @@ function renderIndicatorMgmt(container, config) {
             <input type="text" placeholder="搜索" style="width:100%">
           </div>
         </div>
-        <div class="category-tree">
-          <div class="cat-node selected" onclick="selectCatNode(this)">
-            <i class="fa-solid fa-folder cat-icon" style="color:#3370ff"></i>
-            <span>全部</span>
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-solid fa-chevron-right cat-expand"></i>
-            <i class="fa-regular fa-folder cat-icon"></i>
-            <span>财务数据指标</span>
-          </div>
-          <div class="cat-node" onclick="selectCatNode(this)">
-            <i class="fa-solid fa-chevron-down cat-expand"></i>
-            <i class="fa-regular fa-folder-open cat-icon"></i>
-            <span>指标体系</span>
-          </div>
-          <div class="cat-node cat-child" onclick="selectCatNode(this)">
-            <i class="fa-regular fa-folder cat-icon"></i>
-            <span>免审</span>
-          </div>
-        </div>
+        <div class="category-tree" id="indicator-mgmt-tree"></div>
       </div>
       <!-- 右侧内容 -->
       <div class="split-right">
@@ -104,6 +85,7 @@ function renderIndicatorMgmt(container, config) {
         </div>
       </div>
     </div>`;
+  buildCommonCatTree('indicator-mgmt-tree');
 }
 
 function generateIndicatorRows() {
@@ -199,42 +181,6 @@ function openIndicatorForm(mode, data) {
                     <i class="fa-solid fa-magnifying-glass" style="color:#bbb;font-size:12px;"></i>
                   </div>
                   <div id="cat-tree-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:100;background:#fff;border:1px solid #d9d9d9;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.12);max-height:280px;overflow-y:auto;margin-top:2px;padding:6px 0;">
-                    <div class="cat-tree-node" style="padding:5px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="selectCatTreeNode(this,'财务数据指标')">
-                      <i class="fa-solid fa-folder" style="color:#f5a623;font-size:13px;"></i><span style="font-size:13px;color:#333;">财务数据指标</span>
-                    </div>
-                    <div style="padding:5px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="this.querySelector('.cat-sub').style.display=this.querySelector('.cat-sub').style.display==='none'?'block':'none'; var c=this.querySelector('.cat-caret');c.style.transform=c.style.transform==='rotate(90deg)'?'rotate(0deg)':'rotate(90deg)';">
-                      <i class="fa-solid fa-caret-right cat-caret" style="color:#999;font-size:10px;width:10px;transition:transform .2s;transform:rotate(90deg);"></i>
-                      <i class="fa-solid fa-folder-open" style="color:#f5a623;font-size:13px;"></i><span style="font-size:13px;color:#333;">指标体系</span>
-                    </div>
-                    <div class="cat-sub" style="display:block;">
-                      <div class="cat-tree-node" style="padding:5px 12px 5px 40px;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation();selectCatTreeNode(this,'免审')">
-                        <i class="fa-solid fa-folder" style="color:#f5a623;font-size:13px;"></i><span style="font-size:13px;color:#333;">免审</span>
-                      </div>
-                    </div>
-                    <div style="padding:5px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="this.querySelector('.cat-sub').style.display=this.querySelector('.cat-sub').style.display==='none'?'block':'none'; var c=this.querySelector('.cat-caret');c.style.transform=c.style.transform==='rotate(90deg)'?'rotate(0deg)':'rotate(90deg)';">
-                      <i class="fa-solid fa-caret-right cat-caret" style="color:#999;font-size:10px;width:10px;transition:transform .2s;transform:rotate(90deg);"></i>
-                      <i class="fa-solid fa-folder-open" style="color:#f5a623;font-size:13px;"></i><span style="font-size:13px;color:#333;">华润集团</span>
-                    </div>
-                    <div class="cat-sub" style="display:block;">
-                      <div class="cat-tree-node" style="padding:5px 12px 5px 40px;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation();selectCatTreeNode(this,'集团（不区分业态）')">
-                        <i class="fa-solid fa-folder" style="color:#f5a623;font-size:13px;"></i><span style="font-size:13px;color:#333;">集团（不区分业态）</span>
-                      </div>
-                    </div>
-                    <div style="padding:5px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="this.querySelector('.cat-sub').style.display=this.querySelector('.cat-sub').style.display==='none'?'block':'none'; var c=this.querySelector('.cat-caret');c.style.transform=c.style.transform==='rotate(90deg)'?'rotate(0deg)':'rotate(90deg)';">
-                      <i class="fa-solid fa-caret-right cat-caret" style="color:#999;font-size:10px;width:10px;transition:transform .2s;transform:rotate(90deg);"></i>
-                      <i class="fa-solid fa-folder-open" style="color:#f5a623;font-size:13px;"></i><span style="font-size:13px;color:#333;">人力资源</span>
-                    </div>
-                    <div class="cat-sub" style="display:block;">
-                      <div style="padding:5px 12px 5px 40px;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation();this.querySelector('.cat-sub').style.display=this.querySelector('.cat-sub').style.display==='none'?'block':'none'; var c=this.querySelector('.cat-caret');c.style.transform=c.style.transform==='rotate(90deg)'?'rotate(0deg)':'rotate(90deg)';">
-                        <i class="fa-solid fa-caret-right cat-caret" style="color:#999;font-size:10px;width:10px;transition:transform .2s;transform:rotate(90deg);"></i>
-                        <i class="fa-solid fa-folder-open" style="color:#f5a623;font-size:13px;"></i><span style="font-size:13px;color:#333;">员工关系</span>
-                      </div>
-                      <div class="cat-sub" style="display:block;">
-                        <div class="cat-tree-node" style="padding:5px 12px 5px 68px;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation();selectCatTreeNode(this,'人员规模')">
-                          <i class="fa-solid fa-folder" style="color:#f5a623;font-size:13px;"></i><span style="font-size:13px;color:#333;">人员规模</span>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                   ${h}
                 </div>
@@ -1686,6 +1632,9 @@ function closeImportModal() {
 function toggleCategoryTree(trigger) {
   var dd = document.getElementById('cat-tree-dropdown');
   if (!dd) return;
+  if (dd.children.length === 0) {
+    buildCommonCatDropdownTree('cat-tree-dropdown');
+  }
   if (dd.style.display === 'none') {
     dd.style.display = 'block';
     setTimeout(function() {
@@ -1700,12 +1649,10 @@ function toggleCategoryTree(trigger) {
 function _closeCatTreeOnClick(e) {
   var dd = document.getElementById('cat-tree-dropdown');
   if (!dd) return;
-  if (!dd.contains(e.target) && !dd.previousElementSibling && true) {
-    var wrapper = dd.parentElement;
-    if (wrapper && !wrapper.contains(e.target)) {
-      dd.style.display = 'none';
-      document.removeEventListener('click', _closeCatTreeOnClick);
-    }
+  var wrapper = dd.parentElement;
+  if (wrapper && !wrapper.contains(e.target)) {
+    dd.style.display = 'none';
+    document.removeEventListener('click', _closeCatTreeOnClick);
   }
 }
 
